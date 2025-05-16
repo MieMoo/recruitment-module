@@ -90,23 +90,23 @@ const AddApplicantModal = ({ onClose }) => {
         <section className="mb-6">
           <h3 className="font-semibold text-lg mb-2">Personal Information</h3>
           <div className="grid grid-cols-2 gap-4">
-            <input type="text" name="first_name" value={form.first_name || ''} onChange={handleChange} placeholder="First Name" className="border px-3 py-2 rounded dark:bg-gray-800 dark:text-white" />
-            <input type="text" name="last_name" value={form.last_name || ''} onChange={handleChange} placeholder="Last Name" className="border px-3 py-2 rounded dark:bg-gray-800 dark:text-white" />
-            <input type="date" name="birthdate" value={form.birthdate || ''} max={today} onChange={handleChange} className="border px-3 py-2 rounded dark:bg-gray-800 dark:text-white" />
-            <select name="sex" value={form.sex || ''} onChange={handleChange} className="border px-3 py-2 rounded dark:bg-gray-800 dark:text-white">
+            <input type="text" name="first_name" value={form.first_name || ''} onChange={handleChange} placeholder="First Name" className="border px-3 py-2 rounded dark:bg-[#24292e] dark:text-white" />
+            <input type="text" name="last_name" value={form.last_name || ''} onChange={handleChange} placeholder="Last Name" className="border px-3 py-2 rounded dark:bg-[#24292e] dark:text-white" />
+            <input type="date" name="birthdate" value={form.birthdate || ''} max={today} onChange={handleChange} className="border px-3 py-2 rounded dark:bg-[#24292e] dark:text-white" />
+            <select name="sex" value={form.sex || ''} onChange={handleChange} className="border px-3 py-2 rounded dark:bg-[#24292e] dark:text-white">
               <option value="">Select Gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </select>
-            <input type="email" name="email" value={form.email || ''} onChange={handleChange} placeholder="Email" className="border px-3 py-2 rounded col-span-2 dark:bg-gray-800 dark:text-white" />
-            <input type="text" name="phone" value={form.phone || ''} onChange={handleChange} placeholder="Phone Number" className="border px-3 py-2 rounded col-span-2 dark:bg-gray-800 dark:text-white" />
+            <input type="email" name="email" value={form.email || ''} onChange={handleChange} placeholder="Email" className="border px-3 py-2 rounded col-span-2 dark:bg-[#24292e] dark:text-white" />
+            <input type="text" name="phone" value={form.phone || ''} onChange={handleChange} placeholder="Phone Number" className="border px-3 py-2 rounded col-span-2 dark:bg-[#24292e] dark:text-white" />
           </div>
         </section>
 
         {/* Applied Position */}
         <section className="mb-6">
           <h3 className="font-semibold text-lg mb-2">Position Applied For</h3>
-          <select name="position" value={form.position || ''} onChange={handleChange} className="border px-3 py-2 rounded w-full dark:bg-gray-800 dark:text-white">
+          <select name="position" value={form.position || ''} onChange={handleChange} className="border px-3 py-2 rounded w-full dark:bg-[#24292e] dark:text-white">
             <option value="">Select Position</option>
             <option value="HR">HR</option>
             <option value="Recruiter">Recruiter</option>
@@ -121,17 +121,17 @@ const AddApplicantModal = ({ onClose }) => {
         <section className="mb-6">
           <h3 className="font-semibold text-lg mb-2">Educational Background</h3>
           <div className="grid grid-cols-2 gap-4">
-            <select name="education" value={form.education || ''} onChange={handleChange} className="border px-3 py-2 rounded dark:bg-gray-800 dark:text-white">
+            <select name="education" value={form.education || ''} onChange={handleChange} className="border px-3 py-2 rounded dark:bg-[#24292e] dark:text-white">
               <option value="">Select Education</option>
               <option value="High School">High School</option>
               <option value="Bachelor’s">Bachelor’s</option>
               <option value="Master’s">Master’s</option>
             </select>
             <div className="grid grid-cols-2 gap-4 col-span-2">
-              <input type="date" name="start_date" value={form.start_date} onChange={handleChange} className="border px-3 py-2 rounded dark:bg-gray-800 dark:text-white" />
-              <input type="date" name="end_date" value={form.end_date} onChange={handleChange} className="border px-3 py-2 rounded dark:bg-gray-800 dark:text-white" />
+              <input type="date" name="start_date" value={form.start_date} onChange={handleChange} className="border px-3 py-2 rounded dark:bg-[#24292e] dark:text-white" />
+              <input type="date" name="end_date" value={form.end_date} onChange={handleChange} className="border px-3 py-2 rounded dark:bg-[#24292e] dark:text-white" />
             </div>
-            <input type="text" name="institution" value={form.institution || ''} onChange={handleChange} placeholder="Institution" className="border px-3 py-2 rounded col-span-2 dark:bg-gray-800 dark:text-white" />
+            <input type="text" name="institution" value={form.institution || ''} onChange={handleChange} placeholder="Institution" className="border px-3 py-2 rounded col-span-2 dark:bg-[#24292e] dark:text-white" />
           </div>
         </section>
 
@@ -146,13 +146,13 @@ const AddApplicantModal = ({ onClose }) => {
               </label>
               {resumeFile && <p className="mt-2 text-green-500 text-sm">{resumeFile.name}</p>}
             </div>
-            <select name="source" value={form.source || ''} onChange={handleChange} className="border px-3 py-2 rounded dark:bg-gray-800 dark:text-white">
+            <select name="source" value={form.source || ''} onChange={handleChange} className="border px-3 py-2 rounded dark:bg-[#24292e] dark:text-white">
               <option value="">Select Source</option>
               <option value="LinkedIn">LinkedIn</option>
               <option value="Referral">Referral</option>
               <option value="JobStreet">JobStreet</option>
             </select>
-            <textarea name="notes" value={form.notes || ''} onChange={handleChange} placeholder="Notes" rows="4" className="border px-3 py-2 rounded col-span-2 dark:bg-gray-800 dark:text-white" />
+            <textarea name="notes" value={form.notes || ''} onChange={handleChange} placeholder="Notes" rows="4" className="border px-3 py-2 rounded col-span-2 dark:bg-[#24292e] dark:text-white" />
           </div>
         </section>
 
