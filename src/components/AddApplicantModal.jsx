@@ -81,7 +81,7 @@ const AddApplicantModal = ({ onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-50 pt-10" onClick={onClose}>
       <div
-        className="bg-white dark:bg-gray-900 text-black dark:text-white w-full max-w-4xl rounded-lg shadow-lg p-8 overflow-y-auto max-h-[90vh]"
+        className="bg-white dark:bg-[#1f1f1f] text-black dark:text-white w-full max-w-4xl rounded-lg shadow-lg p-8 overflow-y-auto max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-xl font-semibold mb-6">Add New Applicant</h2>
