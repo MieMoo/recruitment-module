@@ -141,7 +141,7 @@ const AddApplicantModal = ({ onClose }) => {
           <div className="grid grid-cols-2 gap-4">
             <div className="border-2 border-dashed px-3 py-10 rounded text-center text-sm text-gray-500 dark:text-gray-400">
               <label className="cursor-pointer">
-                📁 Click files <span className="text-blue-600 underline">here.</span>
+                📁 Click and Select files <span className="text-blue-600 underline">here.</span>
                 <input type="file" onChange={(e) => setResumeFile(e.target.files[0])} className="hidden" />
               </label>
               {resumeFile && <p className="mt-2 text-green-500 text-sm">{resumeFile.name}</p>}
