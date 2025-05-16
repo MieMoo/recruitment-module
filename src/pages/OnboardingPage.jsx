@@ -36,7 +36,7 @@ export default function OnboardingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen pt-16 bg-white dark:bg-[#0f172a] text-[#3f3f3f] dark:text-white p-6">
+    <div className="min-h-screen pt-16 bg-white dark:bg-[#121212] text-[#3f3f3f] dark:text-white p-6">
       <h2 className="text-2xl font-semibold text-[#b69d73] mb-6 dark:text-[#e0c89b]">Applicant’s Lists</h2>
 
       <div className="space-y-6">
@@ -46,7 +46,7 @@ export default function OnboardingPage() {
           applicants.map((applicant) => (
             <div
               key={applicant.id}
-              className="border border-gray-300 dark:border-gray-600 rounded p-4 shadow-sm bg-[#fdfdfd] dark:bg-[#1e293b]"
+              className="border border-gray-300 dark:border-gray-600 rounded p-4 shadow-sm bg-[#fdfdfd] dark:bg-[#1f1f1f]"
             >
               <p className="font-semibold text-[#b69d73] dark:text-[#e0c89b]">
                 Name: {applicant.first_name} {applicant.last_name}
