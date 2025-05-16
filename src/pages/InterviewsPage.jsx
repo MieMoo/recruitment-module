@@ -150,7 +150,7 @@ export default function InterviewsPage() {
         <h2 className="text-xl font-semibold mb-4 text-[#b69d73] dark:text-[#e0c79c] text-center">Select Date and Time</h2>
         <div className="flex justify-center">
           <div className="flex flex-wrap gap-4">
-            <input type="date" min={today} value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} className="border px-3 py-2 rounded dark:bg-[#24292e] dark:text-white" />
+            <input type="date" min={today} value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} className="border px-3 py-2 rounded dark:bg-[#1a1919] dark:text-white" />
             <input type="time" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)} className="border px-3 py-2 rounded dark:bg-[#24292e] dark:text-white" />
             <select value={selectedType} onChange={(e) => setSelectedType(e.target.value)} className="border px-3 py-2 rounded dark:bg-[#24292e] dark:text-white">
               <option value="">Types</option>
