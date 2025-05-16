@@ -97,7 +97,7 @@ export default function ApplicantsPage() {
   return (
     <div className="flex min-h-screen pt-16 overflow-hidden bg-[#f8f8f8] dark:bg-[#1e1e1e] text-[#3f3f3f] dark:text-white font-sans">
       {/* Sidebar */}
-      <aside className="w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 p-6 space-y-6">
+      <aside className="w-64 bg-white dark:bg-[#1a1919] border-r border-gray-200 dark:border-gray-700 p-6 space-y-6">
         <input
           type="text"
           placeholder="Search applicants..."
@@ -134,7 +134,7 @@ export default function ApplicantsPage() {
         <div>
           <h3 className="font-medium mb-2">Position</h3>
           <select
-            className="w-full border px-3 py-2 rounded text-sm bg-white dark:bg-gray-800 text-black dark:text-white"
+            className="w-full border px-3 py-2 rounded text-sm bg-white dark:bg-[#1f1f1f] text-black dark:text-white"
             value={selectedPosition}
             onChange={(e) => setSelectedPosition(e.target.value)}
           >
@@ -153,7 +153,7 @@ export default function ApplicantsPage() {
           <h3 className="font-medium mb-2">Date Range</h3>
           <input
             type="date"
-            className="w-full px-3 py-2 border rounded text-sm bg-white dark:bg-gray-800 text-black dark:text-white"
+            className="w-full px-3 py-2 border rounded text-sm bg-white dark:bg-[#1f1f1f] text-black dark:text-white"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
@@ -186,7 +186,7 @@ export default function ApplicantsPage() {
               <div
                 key={applicant.id}
                 onClick={() => setSelectedApplicant(applicant)}
-                className="cursor-pointer bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg p-6 flex justify-between items-center hover:shadow"
+                className="cursor-pointer bg-white dark:bg-[#1f1f1f] border border-gray-300 dark:border-gray-700 rounded-lg p-6 flex justify-between items-center hover:shadow"
               >
                 <div>
                   <h2 className="text-lg font-medium">
@@ -200,7 +200,7 @@ export default function ApplicantsPage() {
                 </div>
                 <span
                   className={`text-sm font-medium px-4 py-2 rounded ${
-                    statusStyles[applicant.status] || 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-white'
+                    statusStyles[applicant.status] || 'bg-gray-200 text-gray-700 dark:bg-[#24292e] dark:text-white'
                   }`}
                 >
                   {statusLabels[applicant.status] || 'N/A'}
@@ -220,7 +220,7 @@ export default function ApplicantsPage() {
                 className={`px-3 py-1 rounded border ${
                   currentPage === i + 1
                     ? 'bg-[#b69d73] text-white'
-                    : 'bg-white dark:bg-gray-700 dark:text-white'
+                    : 'bg-white dark:bg-[#24292e] dark:text-white'
                 }`}
               >
                 {i + 1}
