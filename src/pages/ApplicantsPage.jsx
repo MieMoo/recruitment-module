@@ -101,7 +101,7 @@ export default function ApplicantsPage() {
         <input
           type="text"
           placeholder="Search applicants..."
-          className="w-full px-3 py-2 border rounded text-sm bg-white dark:bg-gray-800 text-black dark:text-white"
+          className="w-full px-3 py-2 border rounded text-sm bg-white dark:bg-[#1a1919] text-black dark:text-white"
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}
         />
