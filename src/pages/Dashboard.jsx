@@ -78,7 +78,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="pt-20 px-6 bg-[#f8f8f8] dark:bg-[#1e1e1e] text-[#3f3f3f] dark:text-white min-h-screen">
+    <div className="pt-20 px-6 bg-[#f8f8f8] dark:bg-[#121212] text-[#3f3f3f] dark:text-white min-h-screen">
       <h1 className="text-3xl font-bold mb-8 text-[#b69d73] tracking-tight">Recruitment Dashboard</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
@@ -88,7 +88,7 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
+        <div className="bg-white dark:bg-[#1f1f1f] p-6 rounded-xl shadow">
           <h2 className="text-lg font-semibold text-[#b69d73] mb-4">Applicant Status Distribution</h2>
           <ResponsiveContainer width="100%" height={300}>
   <PieChart
@@ -135,7 +135,7 @@ export default function Dashboard() {
 
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
+        <div className="bg-white dark:bg-[#1f1f1f] p-6 rounded-xl shadow">
           <h2 className="text-lg font-semibold text-[#b69d73] mb-4">Applicant Status Bar Chart</h2>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={statusChartData}>
@@ -152,14 +152,14 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow mb-8">
+      <div className="bg-white dark:bg-[#1f1f1f] p-6 rounded-xl shadow mb-8">
         <h2 className="text-xl font-semibold text-[#b69d73] mb-4">Upcoming Interviews</h2>
         {upcoming.length === 0 ? (
           <p className="text-gray-500 dark:text-gray-300">No interviews scheduled.</p>
         ) : (
           <ul className="space-y-3">
             {upcoming.map((i) => (
-              <li key={i.id} className="bg-gray-100 dark:bg-gray-700 p-4 rounded text-sm">
+              <li key={i.id} className="bg-gray-100 dark:bg-[#24292e] p-4 rounded text-sm">
                 <p className="font-semibold mb-1">📅 {i.date} at {i.time}</p>
                 <p>🧑‍💼 {i.applicants?.first_name} {i.applicants?.last_name} — {i.applicants?.position}</p>
                 <p>🎓 {i.applicants?.education} @ {i.applicants?.institution}</p>
@@ -170,7 +170,7 @@ export default function Dashboard() {
         )}
       </div>
 
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
+      <div className="bg-white dark:bg-[#1f1f1f] p-6 rounded-xl shadow">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-[#b69d73]">Recent Applicants</h2>
           <button
@@ -185,7 +185,7 @@ export default function Dashboard() {
         ) : (
           <ul className="space-y-3 text-sm">
             {recent.map((r) => (
-              <li key={r.id} className="bg-gray-100 dark:bg-gray-700 p-4 rounded">
+              <li key={r.id} className="bg-gray-100 dark:bg-[#24292e] p-4 rounded">
                 <p className="text-lg font-semibold">{r.first_name} {r.last_name}</p>
                 <p className="text-sm">Applied on {new Date(r.created_at).toLocaleDateString()}</p>
                 <p>📧 <strong>Email:</strong> {r.email}</p>

@@ -39,7 +39,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm z-50 h-16">
+    <nav className="fixed top-0 left-0 right-0 bg-white dark:bg-[#171717] border-b border-gray-200 dark:border-gray-700 shadow-sm z-50 h-16">
       <div className="flex items-center justify-between px-6 h-full relative">
         {/* Logo */}
         <div className="text-2xl font-extrabold text-[#a68c65] tracking-wide">
