@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
-import { PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, ResponsiveContainer, LabelList } from 'recharts';
+import {
+  PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, ResponsiveContainer
+} from 'recharts';
 import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
@@ -15,6 +17,8 @@ export default function Dashboard() {
   });
   const [recent, setRecent] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const applicantsPerPage = 5;
 
   const fetchStats = async () => {
     const { data, error } = await supabase.from('applicants').select('*');
@@ -32,7 +36,7 @@ export default function Dashboard() {
     setStats({ total, applied, scheduled, offered, hired, rejected, hiredToday });
 
     const sorted = [...data].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-    setRecent(sorted.slice(0, 5));
+    setRecent(sorted);
   };
 
   const fetchUpcomingInterviews = async () => {
@@ -46,9 +50,12 @@ export default function Dashboard() {
     setUpcoming(data);
   };
 
-  const exportToCSV = () => {
+  const exportToCSV = async () => {
+    const { data, error } = await supabase.from('applicants').select('*');
+    if (error) return alert('Failed to fetch applicants.');
+
     const headers = ['First Name,Last Name,Email,Position,Education,Institution,Status'];
-    const rows = recent.map((r) =>
+    const rows = data.map((r) =>
       `${r.first_name},${r.last_name},${r.email || ''},${r.position || ''},${r.education || ''},${r.institution || ''},${r.status}`
     );
     const csv = [...headers, ...rows].join('\n');
@@ -57,7 +64,7 @@ export default function Dashboard() {
 
     const link = document.createElement('a');
     link.setAttribute('href', url);
-    link.setAttribute('download', 'recent_applicants.csv');
+    link.setAttribute('download', 'all_applicants.csv');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -77,6 +84,12 @@ export default function Dashboard() {
     { name: 'Rejected', value: stats.rejected },
   ];
 
+  const totalPages = Math.ceil(recent.length / applicantsPerPage);
+  const paginatedRecent = recent.slice(
+    (currentPage - 1) * applicantsPerPage,
+    currentPage * applicantsPerPage
+  );
+
   return (
     <div className="pt-20 px-6 bg-[#f8f8f8] dark:bg-[#121212] text-[#3f3f3f] dark:text-white min-h-screen">
       <h1 className="text-3xl font-bold mb-8 text-[#b69d73] tracking-tight">Recruitment Dashboard</h1>
@@ -87,52 +100,40 @@ export default function Dashboard() {
         <Card title="Interviews Scheduled" value={stats.scheduled} icon="📅" color="amber" linkTo="/interviews" />
       </div>
 
+      {/* Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="bg-white dark:bg-[#1f1f1f] p-6 rounded-xl shadow">
           <h2 className="text-lg font-semibold text-[#b69d73] mb-4">Applicant Status Distribution</h2>
           <ResponsiveContainer width="100%" height={300}>
-  <PieChart
-    margin={{ top: 40, right: 40, bottom: 40, left: 40 }} // ✅ adds padding around chart
-  >
-    <Pie
-      data={statusChartData}
-      cx="50%"
-      cy="50%"
-      outerRadius={100}
-      dataKey="value"
-      label={({ cx, cy, midAngle, outerRadius, percent, index }) => {
-        const RADIAN = Math.PI / 180;
-        const radius = outerRadius + 20;
-        const x = cx + radius * Math.cos(-midAngle * RADIAN);
-        let y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-        // ✅ push label downward if it's too high
-        if (y < 20) y = 20;
-
-        const entry = statusChartData[index];
-        return (
-          <text
-            x={x}
-            y={y}
-            fill="#fff"
-            textAnchor={x > cx ? 'start' : 'end'}
-            dominantBaseline="central"
-            fontSize={12}
-          >
-            {`${entry.name}: ${(percent * 100).toFixed(0)}%`}
-          </text>
-        );
-      }}
-    >
-      {statusChartData.map((entry, index) => (
-        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-      ))}
-    </Pie>
-    <Tooltip />
-    <Legend verticalAlign="bottom" align="center" iconType="circle" />
-  </PieChart>
-</ResponsiveContainer>
-
+            <PieChart>
+              <Pie
+                data={statusChartData}
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                dataKey="value"
+                label={({ cx, cy, midAngle, outerRadius, percent, index }) => {
+                  const RADIAN = Math.PI / 180;
+                  const radius = outerRadius + 20;
+                  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                  let y = cy + radius * Math.sin(-midAngle * RADIAN);
+                  if (y < 20) y = 20;
+                  const entry = statusChartData[index];
+                  return (
+                    <text x={x} y={y} fill="#fff" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" fontSize={12}>
+                      {`${entry.name}: ${(percent * 100).toFixed(0)}%`}
+                    </text>
+                  );
+                }}
+              >
+                {statusChartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend verticalAlign="bottom" align="center" iconType="circle" />
+            </PieChart>
+          </ResponsiveContainer>
         </div>
 
         <div className="bg-white dark:bg-[#1f1f1f] p-6 rounded-xl shadow">
@@ -152,6 +153,7 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* Upcoming Interviews */}
       <div className="bg-white dark:bg-[#1f1f1f] p-6 rounded-xl shadow mb-8">
         <h2 className="text-xl font-semibold text-[#b69d73] mb-4">Upcoming Interviews</h2>
         {upcoming.length === 0 ? (
@@ -170,21 +172,19 @@ export default function Dashboard() {
         )}
       </div>
 
+      {/* Recent Applicants + Pagination */}
       <div className="bg-white dark:bg-[#1f1f1f] p-6 rounded-xl shadow">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-[#b69d73]">Recent Applicants</h2>
-          <button
-            onClick={exportToCSV}
-            className="px-3 py-1 text-sm bg-[#b69d73] text-white rounded hover:bg-[#a88c65]"
-          >
+          <button onClick={exportToCSV} className="px-3 py-1 text-sm bg-[#b69d73] text-white rounded hover:bg-[#a88c65]">
             Export to CSV
           </button>
         </div>
-        {recent.length === 0 ? (
+        {paginatedRecent.length === 0 ? (
           <p className="text-gray-500 dark:text-gray-300">No recent applicants.</p>
         ) : (
           <ul className="space-y-3 text-sm">
-            {recent.map((r) => (
+            {paginatedRecent.map((r) => (
               <li key={r.id} className="bg-gray-100 dark:bg-[#24292e] p-4 rounded">
                 <p className="text-lg font-semibold">{r.first_name} {r.last_name}</p>
                 <p className="text-sm">Applied on {new Date(r.created_at).toLocaleDateString()}</p>
@@ -193,16 +193,31 @@ export default function Dashboard() {
                 <p>🎓 <strong>Education:</strong> {r.education} @ {r.institution}</p>
                 <p>🧭 <strong>Source:</strong> {r.source}</p>
                 <p>📝 <strong>Status:</strong> <span className={
-                  r.status === 'Hired'
-                    ? 'text-green-400'
-                    : r.status === 'Rejected'
-                    ? 'text-red-400'
-                    : 'text-pink-300'
+                  r.status === 'Hired' ? 'text-green-400' :
+                  r.status === 'Rejected' ? 'text-red-400' : 'text-pink-300'
                 }>{r.status}</span></p>
               </li>
             ))}
           </ul>
         )}
+
+        <div className="flex justify-end space-x-2 mt-4">
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+            className="px-3 py-1 rounded bg-gray-300 dark:bg-gray-600 text-sm disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="px-2 py-1 text-sm">{`Page ${currentPage} of ${totalPages}`}</span>
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            className="px-3 py-1 rounded bg-gray-300 dark:bg-gray-600 text-sm disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
