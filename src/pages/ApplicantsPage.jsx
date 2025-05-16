@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import AddApplicantModal from '../components/addApplicantModal';
+import AddApplicantModal from '../components/AddApplicantModal';
 import ApplicantDetailsModal from '../components/ApplicantDetailModal';
 
 const statusLabels = {
