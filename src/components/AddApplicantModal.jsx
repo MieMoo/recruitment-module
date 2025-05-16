@@ -22,6 +22,7 @@ const AddApplicantModal = ({ onClose }) => {
   });
 
   const [resumeFile, setResumeFile] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setForm((prev) => ({
@@ -31,50 +32,67 @@ const AddApplicantModal = ({ onClose }) => {
   };
 
   const handleSubmit = async () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^[0-9]{10,15}$/;
+    if (submitting) return;
+    setSubmitting(true);
 
-    if (!emailRegex.test(form.email)) return alert('Invalid email.');
-    if (!phoneRegex.test(form.phone)) return alert('Invalid phone number.');
-    if (!resumeFile) return alert('Please upload a resume.');
+    try {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const phoneRegex = /^[0-9]{10,15}$/;
 
-    const { data: duplicates } = await supabase
-      .from('applicants')
-      .select('*')
-      .eq('first_name', form.first_name)
-      .eq('last_name', form.last_name);
+      if (!emailRegex.test(form.email)) return alert('Invalid email.');
+      if (!phoneRegex.test(form.phone)) return alert('Invalid phone number.');
+      if (!resumeFile) return alert('Please upload a resume.');
 
-    if (duplicates.length > 0 && !confirm("Duplicate name found. Continue?")) return;
+      // Duplicate check
+      const { data: existing, error: dupError } = await supabase
+        .from('applicants')
+        .select('id')
+        .or(
+          `and(first_name.eq.${form.first_name},last_name.eq.${form.last_name}),email.eq.${form.email},phone.eq.${form.phone}`
+        );
 
-    const filePath = `resumes/${Date.now()}_${resumeFile.name}`;
-    const { error: fileError } = await supabase.storage
-      .from('applicant-docs')
-      .upload(filePath, resumeFile);
-    if (fileError) return alert('File upload failed.');
+      if (dupError) {
+        console.error('Duplicate check failed:', dupError.message);
+        return alert('Error checking for duplicates.');
+      }
 
-    const publicUrl = supabase
-      .storage
-      .from('applicant-docs')
-      .getPublicUrl(filePath).data.publicUrl;
+      if (existing.length > 0) {
+        return alert('Duplicate applicant found (name, email, or phone already exists). Submission blocked.');
+      }
 
-    const age = new Date().getFullYear() - new Date(form.birthdate).getFullYear();
+      // Upload file
+      const filePath = `resumes/${Date.now()}_${resumeFile.name}`;
+      const { error: fileError } = await supabase.storage
+        .from('applicant-docs')
+        .upload(filePath, resumeFile);
+      if (fileError) return alert('File upload failed.');
 
-    const { error } = await supabase.from('applicants').insert([
-      {
-        ...form,
-        age,
-        document_url: publicUrl,
-        status: 'Applied',
-        created_at: new Date().toISOString(),
-      },
-    ]);
+      const publicUrl = supabase
+        .storage
+        .from('applicant-docs')
+        .getPublicUrl(filePath).data.publicUrl;
 
-    if (error) alert(error.message);
-    else {
-      alert('Applicant submitted!');
-      setForm({});
-      setResumeFile(null);
-      onClose();
+      const age = new Date().getFullYear() - new Date(form.birthdate).getFullYear();
+
+      const { error } = await supabase.from('applicants').insert([
+        {
+          ...form,
+          age,
+          document_url: publicUrl,
+          status: 'Applied',
+          created_at: new Date().toISOString(),
+        },
+      ]);
+
+      if (error) alert(error.message);
+      else {
+        alert('Applicant submitted!');
+        setForm({});
+        setResumeFile(null);
+        onClose();
+      }
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -86,7 +104,7 @@ const AddApplicantModal = ({ onClose }) => {
       >
         <h2 className="text-xl font-semibold mb-6">Add New Applicant</h2>
 
-        {/* Personal Information */}
+        {/* Personal Info */}
         <section className="mb-6">
           <h3 className="font-semibold text-lg mb-2">Personal Information</h3>
           <div className="grid grid-cols-2 gap-4">
@@ -103,7 +121,7 @@ const AddApplicantModal = ({ onClose }) => {
           </div>
         </section>
 
-        {/* Applied Position */}
+        {/* Position */}
         <section className="mb-6">
           <h3 className="font-semibold text-lg mb-2">Position Applied For</h3>
           <select name="position" value={form.position || ''} onChange={handleChange} className="border px-3 py-2 rounded w-full dark:bg-gray-800 dark:text-white">
@@ -117,7 +135,7 @@ const AddApplicantModal = ({ onClose }) => {
           </select>
         </section>
 
-        {/* Educational Background */}
+        {/* Education */}
         <section className="mb-6">
           <h3 className="font-semibold text-lg mb-2">Educational Background</h3>
           <div className="grid grid-cols-2 gap-4">
@@ -135,7 +153,7 @@ const AddApplicantModal = ({ onClose }) => {
           </div>
         </section>
 
-        {/* Supporting Document */}
+        {/* Resume */}
         <section className="mb-6">
           <h3 className="font-semibold text-lg mb-2">Supporting Document</h3>
           <div className="grid grid-cols-2 gap-4">
@@ -159,7 +177,13 @@ const AddApplicantModal = ({ onClose }) => {
         {/* Buttons */}
         <div className="flex justify-end space-x-4 mt-6">
           <button onClick={onClose} className="px-4 py-2 border rounded text-gray-600 hover:bg-gray-100 dark:border-gray-500 dark:text-white dark:hover:bg-gray-700">Cancel</button>
-          <button onClick={handleSubmit} className="px-6 py-2 bg-[#b69d73] text-white rounded hover:bg-[#a88c65]">Submit Applicant</button>
+          <button
+            onClick={handleSubmit}
+            disabled={submitting}
+            className={`px-6 py-2 rounded text-white ${submitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#b69d73] hover:bg-[#a88c65]'}`}
+          >
+            {submitting ? 'Submitting...' : 'Submit Applicant'}
+          </button>
         </div>
       </div>
     </div>
