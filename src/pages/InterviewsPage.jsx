@@ -145,14 +145,14 @@ export default function InterviewsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#f8f8f8] dark:bg-gray-900 text-[#3f3f3f] dark:text-white pt-16 p-6">
-      <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 p-6 rounded shadow mb-6">
+    <div className="min-h-screen bg-[#f8f8f8] dark:bg-[#121212] text-[#3f3f3f] dark:text-white pt-16 p-6">
+      <div className="max-w-4xl mx-auto bg-white dark:bg-[#1f1f1f] p-6 rounded shadow mb-6">
         <h2 className="text-xl font-semibold mb-4 text-[#b69d73] dark:text-[#e0c79c] text-center">Select Date and Time</h2>
         <div className="flex justify-center">
           <div className="flex flex-wrap gap-4">
-            <input type="date" min={today} value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} className="border px-3 py-2 rounded dark:bg-gray-700 dark:text-white" />
-            <input type="time" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)} className="border px-3 py-2 rounded dark:bg-gray-700 dark:text-white" />
-            <select value={selectedType} onChange={(e) => setSelectedType(e.target.value)} className="border px-3 py-2 rounded dark:bg-gray-700 dark:text-white">
+            <input type="date" min={today} value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} className="border px-3 py-2 rounded dark:bg-[#24292e] dark:text-white" />
+            <input type="time" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)} className="border px-3 py-2 rounded dark:bg-[#24292e] dark:text-white" />
+            <select value={selectedType} onChange={(e) => setSelectedType(e.target.value)} className="border px-3 py-2 rounded dark:bg-[#24292e] dark:text-white">
               <option value="">Types</option>
               <option value="Office">Office</option>
               <option value="Virtual">Virtual</option>
@@ -165,11 +165,11 @@ export default function InterviewsPage() {
       {/* Applicant Table */}
       <div className="flex justify-between items-center mb-3">
         <h3 className="text-lg font-semibold text-[#b69d73] dark:text-[#e0c79c]">Select Applicants</h3>
-        <input type="text" placeholder="Search applicants..." value={search} onChange={(e) => setSearch(e.target.value)} className="border px-3 py-2 rounded text-sm dark:bg-gray-700 dark:text-white" />
+        <input type="text" placeholder="Search applicants..." value={search} onChange={(e) => setSearch(e.target.value)} className="border px-3 py-2 rounded text-sm dark:bg-[#24292e] dark:text-white" />
       </div>
       <table className="w-full border text-left text-sm mb-10">
         <thead>
-          <tr className="bg-[#f9f9f9] dark:bg-gray-700">
+          <tr className="bg-[#f9f9f9] dark:bg-[#24292e]">
             <th className="px-4 py-2 border"></th>
             <th className="px-4 py-2 border text-[#b69d73] dark:text-[#e0c79c]">Name</th>
             <th className="px-4 py-2 border">Position</th>
@@ -195,8 +195,8 @@ export default function InterviewsPage() {
       {/* Search + Filter */}
       <div className="flex flex-wrap justify-between items-center mb-4 gap-4">
         <h3 className="text-lg font-semibold text-[#b69d73] dark:text-[#e0c79c]">Scheduled Interviews</h3>
-        <input type="text" placeholder="Search ID or Name..." value={searchInterviews} onChange={(e) => setSearchInterviews(e.target.value)} className="border px-3 py-2 rounded text-sm dark:bg-gray-700 dark:text-white" />
-        <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} className="border px-3 py-2 rounded text-sm dark:bg-gray-700 dark:text-white">
+        <input type="text" placeholder="Search ID or Name..." value={searchInterviews} onChange={(e) => setSearchInterviews(e.target.value)} className="border px-3 py-2 rounded text-sm dark:bg-[#24292e] dark:text-white" />
+        <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} className="border px-3 py-2 rounded text-sm dark:bg-[#24292e] dark:text-white">
           <option value="">All</option>
           <option value="Scheduled">Scheduled</option>
           <option value="Rescheduled">Rescheduled</option>
@@ -208,7 +208,7 @@ export default function InterviewsPage() {
         {filteredInterviews.map((int) => {
           const applicant = applicants.find((a) => a.id === int.applicant_id);
           return (
-            <li key={int.id} className="bg-white dark:bg-gray-800 p-4 rounded border dark:border-gray-700">
+            <li key={int.id} className="bg-white dark:bg-[#1f1f1f] p-4 rounded border dark:border-gray-700">
               <div className="flex flex-wrap justify-between gap-4">
                 <div className="text-sm leading-relaxed space-y-1">
                   <p><strong>Date:</strong> {int.date} &nbsp;&nbsp; <strong>Time:</strong> {int.time}</p>
